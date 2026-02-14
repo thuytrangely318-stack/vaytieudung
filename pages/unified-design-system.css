@@ -9,7 +9,7 @@
    ============================================ */
 :root {
     /* FE Credit Brand Colors */
-    --fecredit-primary: #00994F;
+    --fecredit-primary: #2a83e9;
     --fecredit-primary-light: #9FE870;
     --fecredit-primary-dark: #015C2E;
     --fecredit-secondary: #f5f6f5;
@@ -567,4 +567,5 @@ th, td {
     img {
         max-width: 100% !important;
     }
+
 }
