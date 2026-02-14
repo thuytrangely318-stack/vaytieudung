@@ -10,7 +10,7 @@
 /* These are kept for backward compatibility but will be overridden by unified-design-system.css */
 :root {
     /* Colors */
-    --fecredit-primary: #00994F;
+    --fecredit-primary: #2a83e9;
     --fecredit-primary-light: #9FE870;
     --fecredit-primary-dark: #015C2E;
     --fecredit-white: #FFFFFF;
@@ -780,3 +780,4 @@ body {
     display: none;
     text-align: center;
 }
+
