@@ -38,7 +38,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #00994F 0%, #015C2E 100%);
+  background: linear-gradient(135deg, #2a83e9 0%, #015C2E 100%);
   opacity: 0.1;
   z-index: 1;
 }
@@ -269,7 +269,7 @@ img[data-error="true"] {
 /* Ensure focus states for images within interactive elements */
 .custom-select-option:focus .bank-logo,
 .custom-method-option:focus .method-logo {
-  outline: 2px solid var(--fecredit-green, #00994F);
+  outline: 2px solid var(--fecredit-green, #2a83e9);
   outline-offset: 2px;
   border-radius: 4px;
 }
