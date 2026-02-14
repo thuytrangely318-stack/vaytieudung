@@ -63,14 +63,14 @@
             height: auto !important;
         }
         #cccd:focus {
-            border-color: #00994F !important;
+            border-color: #2a83e9 !important;
             box-shadow: 0 0 0 3px rgba(0, 153, 79, 0.1) !important;
             outline: none;
         }
 
         /* Button Styling - Matches Step 2 Gradient */
         button[type="submit"] {
-            background: linear-gradient(135deg, #00994F 0%, #00b359 100%) !important;
+            background: linear-gradient(135deg, #2a83e9 0%, #2a83e9 100%) !important;
             color: white !important;
             border: none !important;
             border-radius: 10px !important;
@@ -307,8 +307,8 @@
                                         <div class="new-customer flex-center flex-column align-stretch">
                                             <p class="contact-title" style="color: #6B7280; font-size: 14px; margin-bottom: 8px;">Dành cho khách hàng mới</p>
                                             <a class="phone-link flex-center flex-column fw-700 lh150 radius16 text-uppercase c8-bg c8-bg-solid" href="tel:02835516868" style="background: #E8F5E9; padding: 12px; border-radius: 8px; text-decoration: none; text-align: center;">
-                                                <span class="c8-secondary-heading" style="color: #00994F; font-size: 12px;">Hỗ trợ vay nhanh</span>
-                                                <h5 class="heading c8-heading" style="color: #00994F; margin: 0; font-size: 18px;">028 3551 6868</h5>
+                                                <span class="c8-secondary-heading" style="color: #2a83e9; font-size: 12px;">Hỗ trợ vay nhanh</span>
+                                                <h5 class="heading c8-heading" style="color: #2a83e9; margin: 0; font-size: 18px;">028 3551 6868</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -386,7 +386,7 @@
                     <div class="check-result-custom-card fade-in">
                         <div class="p-6 border-b border-gray-100 bg-gradient-to-r from-green-50 to-white">
                             <div class="text-center">
-                                <h2 class="text-2xl font-bold text-gray-800">Mã Hồ Sơ: <span class="text-[#00994F]">${Utils.escapeHtml(hoSo.loanCode)}</span></h2>
+                                <h2 class="text-2xl font-bold text-gray-800">Mã Hồ Sơ: <span class="text-[#2a83e9]">${Utils.escapeHtml(hoSo.loanCode)}</span></h2>
                                 <p class="text-gray-600 mt-1">Khách hàng: <strong>${Utils.escapeHtml(hoSo.fullName)}</strong></p>
                                 <div class="mt-3 inline-block px-4 py-1 rounded-full text-sm font-bold border ${statusClass}">
                                     ${trangThai}
@@ -398,7 +398,7 @@
                             <!-- Loan Details (Thông tin khoản vay từ Step 2) -->
                             <div class="border rounded-xl overflow-hidden bg-white shadow-sm">
                                 <button class="w-full flex justify-between items-center p-4 text-left font-semibold bg-gray-50 hover:bg-gray-100 transition" onclick="toggleDetails(this)">
-                                    <span class="text-[#00994F]">Chi tiết Khoản vay</span>
+                                    <span class="text-[#2a83e9]">Chi tiết Khoản vay</span>
                                     <svg class="toggle-icon w-5 h-5 transition-transform duration-300 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                 </button>
                                 <div class="details-content show">
@@ -417,7 +417,7 @@
                             <!-- Disbursement Info (Ngân hàng giải ngân từ Step 2) -->
                             <div class="border rounded-xl overflow-hidden bg-white shadow-sm">
                                 <button class="w-full flex justify-between items-center p-4 text-left font-semibold bg-gray-50 hover:bg-gray-100 transition" onclick="toggleDetails(this)">
-                                    <span class="text-[#00994F]">Thông tin Giải ngân & Cá nhân</span>
+                                    <span class="text-[#2a83e9]">Thông tin Giải ngân & Cá nhân</span>
                                     <svg class="toggle-icon w-5 h-5 transition-transform duration-300 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                                 </button>
                                 <div class="details-content">
